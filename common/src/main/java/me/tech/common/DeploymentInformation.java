@@ -1,18 +1,5 @@
 package me.tech.common;
 
-//public record DeploymentInformation(
-//        String token,
-//        String organization,
-//        String repository,
-//        String branch,
-//        String serverName,
-//        String webhookUrl
-//) {
-//    public DeploymentInformation() {
-//
-//    }
-//}
-
 import java.util.Map;
 
 public class DeploymentInformation {
