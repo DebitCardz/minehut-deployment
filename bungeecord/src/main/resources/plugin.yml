@@ -1,0 +1,4 @@
+name: mh-deployment-bungeecord
+main: me.tech.bungeecord.BungeecordDeployment
+version: 0.0.1
+author: Tech

@@ -1,0 +1,5 @@
+name: mh-deployment-bukkit
+version: 0.0.1
+main: me.tech.bukkit.BukkitDeployment
+author: Tech
+api-version: 1.19
