@@ -1,6 +1,5 @@
 plugins {
     `java-library`
-    id("java")
 }
 
 java { toolchain.languageVersion.set(JavaLanguageVersion.of(project.ext.get("javaToolchainVersion") as Int)) }
@@ -16,5 +15,5 @@ tasks {
 }
 
 dependencies {
-    implementation("org.kohsuke:github-api:1.307")
+    compileOnly("commons-io:commons-io:2.11.0")
 }

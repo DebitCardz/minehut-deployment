@@ -6,14 +6,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Deployment {
     private static final String START_CMD_FILE_PATH = "/home/minecraft/signal/start_cmd";
 
-    private static final String SERVER_DIRECTORY = "/home/minecraft/server";
+    public static final String SERVER_DIRECTORY = "/home/minecraft/server";
 
     public static void runDeployScript(DeploymentInformation information) throws IOException, RuntimeException {
         if(System.getProperty("deployed") != null) {
@@ -31,22 +29,23 @@ public class Deployment {
             return;
         }
 
+        // I mean, we can just reuse this and add our own stuff to it.
         String modifiedJavaCmd = startCmdInitialContents.replace(
                 "-jar server.jar",
-                "-Ddeployed=1 -jar server.jar"
+                information.buildJavaCommand()
         );
+        Optional<String> pythonCommand = information.buildPythonCommand();
 
         var writer = new BufferedWriter(new FileWriter(START_CMD_FILE_PATH, true));
         writer.newLine();
-        // todo: make this dynamic.
-        writer.write(String.format(
-                "python3 %s/deployment.py -token %s -organization %s -repository %s -branch %s -servername %s -webhook %s",
-                SERVER_DIRECTORY,
-                information.getToken(), information.getOrganization(), information.getRepository(),
-                information.getBranch(), information.getServerName(), information.getWebhookUrl()
-        ));
-        writer.newLine();
+
+        if(pythonCommand.isPresent()) {
+            writer.write(pythonCommand.get());
+            writer.newLine();
+        }
+
         writer.write(modifiedJavaCmd);
+
         writer.close();
 
         // killed bruh fr bros dead :pray: skull emoji x7
@@ -63,7 +62,7 @@ public class Deployment {
 
             StringBuilder builder = new StringBuilder();
             for(String setting : settings) {
-                builder.append(setting + "=");
+                builder.append(setting).append("=");
                 builder.append("\n");
             }
             builder.deleteCharAt(builder.length());
@@ -103,9 +102,9 @@ public class Deployment {
                 )
         ) {
             IOUtils.copy(
-                    Deployment.class
+                    Objects.requireNonNull(Deployment.class
                             .getClassLoader()
-                            .getResourceAsStream("deployment.py"),
+                            .getResourceAsStream("deployment.py")),
                     out
             );
         } catch(Exception ex) {

@@ -1,19 +1,20 @@
 package me.tech.common;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class DeploymentInformation {
-    private String token;
+    private final String token;
 
-    private String organization;
+    private final String organization;
 
-    private String repository;
+    private final String repository;
 
-    private String branch;
+    private final String branch;
 
-    private String serverName;
+    private final String serverName;
 
-    private String webhookUrl;
+    private final String webhookUrl;
 
     public DeploymentInformation(Map<String, String> settings) {
         this.token = settings.get("token");
@@ -24,27 +25,20 @@ public class DeploymentInformation {
         this.webhookUrl = settings.get("webhook_url");
     }
 
-    public String getToken() {
-        return token;
+    public Optional<String> buildPythonCommand() {
+        return Optional.of(String.format(
+                "python3 %s/deployment.py -token %s -organization %s -repository %s -branch %s -servername %s -webhook %s",
+                Deployment.SERVER_DIRECTORY,
+                token, organization, repository,
+                branch, serverName, webhookUrl
+        ));
     }
 
-    public String getOrganization() {
-        return organization;
-    }
+    public String buildJavaCommand() {
+        String cmd = "-Ddeployed=1 ";
 
-    public String getRepository() {
-        return repository;
-    }
+        cmd += "-jar server.jar";
 
-    public String getBranch() {
-        return branch;
-    }
-
-    public String getServerName() {
-        return serverName;
-    }
-
-    public String getWebhookUrl() {
-        return webhookUrl;
+        return cmd;
     }
 }
