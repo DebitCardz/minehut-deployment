@@ -10,10 +10,9 @@ Minehut deployment is a project designed to allow server owners to not have to g
 
 # Setup
 To setup the system install the corresponding plugin to the server you're trying to deploy on.
-
 Example being if you're attempting to deploy on a Velocity Proxy install the Velocity plugin and setup a file in your root directory as follows.
 
-Setup a `.deployment_information` file with the following fields, it will look similar to a `.env` file.
+Setup a `.deployment_information` file in your root directory with the following fields, it will look similar to a `.env` file.
 ````
 token=
 organization=
