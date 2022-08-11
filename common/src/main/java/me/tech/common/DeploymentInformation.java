@@ -16,6 +16,8 @@ public class DeploymentInformation {
 
     private final String webhookUrl;
 
+    private final String jarName;
+
     public DeploymentInformation(Map<String, String> settings) {
         this.token = settings.get("token");
         this.organization = settings.get("organization");
@@ -23,6 +25,7 @@ public class DeploymentInformation {
         this.branch = settings.get("branch");
         this.serverName = settings.get("server_name");
         this.webhookUrl = settings.get("webhook_url");
+        this.jarName = settings.get("jar_name");
     }
 
     public Optional<String> buildPythonCommand() {
@@ -37,7 +40,7 @@ public class DeploymentInformation {
     public String buildJavaCommand() {
         String cmd = "-Ddeployed=1 ";
 
-        cmd += "-jar server.jar";
+        cmd += "-jar " + jarName;
 
         return cmd;
     }

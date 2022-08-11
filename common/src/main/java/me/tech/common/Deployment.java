@@ -34,13 +34,13 @@ public class Deployment {
                 "-jar server.jar",
                 information.buildJavaCommand()
         );
-        Optional<String> pythonCommand = information.buildPythonCommand();
+        Optional<String> pythonCmd = information.buildPythonCommand();
 
         var writer = new BufferedWriter(new FileWriter(START_CMD_FILE_PATH, true));
         writer.newLine();
 
-        if(pythonCommand.isPresent()) {
-            writer.write(pythonCommand.get());
+        if(pythonCmd.isPresent()) {
+            writer.write(pythonCmd.get());
             writer.newLine();
         }
 
@@ -53,7 +53,7 @@ public class Deployment {
     }
 
     public static DeploymentInformation getInformation() throws RuntimeException, IOException {
-        Set<String> settings = Set.of("token", "organization", "repository", "branch", "server_name", "webhook_url");
+        Set<String> settings = Set.of("token", "organization", "repository", "branch", "server_name", "webhook_url", "jar_name");
 
         File deploymentInfoFile = new File(SERVER_DIRECTORY, ".deployment_information");
         // Create tmp deployment file if it doesn't exist.
@@ -62,7 +62,13 @@ public class Deployment {
 
             StringBuilder builder = new StringBuilder();
             for(String setting : settings) {
-                builder.append(setting).append("=");
+                // Temporary until another solution is made.
+                if(setting.equalsIgnoreCase("jar_name")) {
+                    builder.append(setting).append("=").append("server.jar");
+                } else {
+                    builder.append(setting).append("=");
+                }
+
                 builder.append("\n");
             }
             builder.deleteCharAt(builder.length());
