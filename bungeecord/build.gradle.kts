@@ -1,5 +1,6 @@
 plugins {
-    id("java")
+    `java-library`
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "me.tech"
