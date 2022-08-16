@@ -29,7 +29,6 @@ dependencies {
 
 bukkit {
     name = "mh-deployment-bukkit"
-    apiVersion = "1.19"
     author = "Tech"
     main = "me.tech.bukkit.BukkitDeployment"
 }
